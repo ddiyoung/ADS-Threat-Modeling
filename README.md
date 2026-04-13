@@ -61,63 +61,63 @@ Each directory corresponds to a step in the extended TARA process (Sections 3–
 
 No code execution is needed — these artifacts are analytical datasets.
 
-## 4. Major Claims
+## 4. Paper-to-Artifact Mapping
 
-- **(C1):** The extended TARA methodology achieves 100% coverage of all threat categories defined in UN Regulation No. 155 Annex 5 Part A. This is proven by the verification (E1) described in Section 5.1, whose results are reported in Table B.1 and Table B.2.
+The table below shows which files correspond to which parts of the paper, so reviewers can locate the full underlying data behind any table or figure.
 
-- **(C2):** The integration of MITRE ATLAS and OWASP Top 10 for LLMs identifies 29% more AI-specific risks (11 out of 38 checklist items) compared to baseline STRIDE-only TARA. This is proven by the comparative analysis (E2) described in Section 5.2.
+| Paper Section | Table / Figure | Artifact |
+|---------------|---------------|----------|
+| 4.1 Asset Identification | Figure A.1–A.3 | `1. DFD/` (Level 0, 1, 2) |
+| 3.2 Attack Library Construction | Table 1 | `2. AttackLibrary/` |
+| 4.2 Threat Scenario (STRIDE) | Table 3 | `3. Threat Scenario/Threat Scenario(STRIDE).pdf` |
+| 4.2 Threat Scenario (ATLAS) | Table 4 | `3. Threat Scenario/Threat Scenario(ATLAS).pdf` |
+| 4.2 Threat Scenario (OWASP) | Table 5 | `3. Threat Scenario/Threat Scenario(OWASP).pdf` |
+| 4.3 Impact Rating | Table 6 | `4. Damage Scenario/Damage Scenario.pdf` |
+| 4.4 Attack Path Analysis | Table 7 | `5. Attack Path Analysis/Attack Path.pdf` |
+| 4.5 Security Requirements | Table 8 | `6. Derivation Security Requirements/Security Requirement.pdf` |
+| 4.6 Checklist Derivation | Table A.4, A.5 | `7. Derivation CheckList/Checklist.pdf` |
+| 5.1 Legal Coverage | Table B.1, B.2 | `7. Derivation CheckList/Checklist.pdf` (mapped to UN R155 Annex 5) |
 
-- **(C3):** The proposed methodology attains an Extended Maturity Level (ML 3) in data-driven robustness under the D2TARA maturity model. This is proven by the maturity assessment (E3) described in Section 5.3 and illustrated in Figure 3.
+The paper's tables present representative examples; the artifacts here contain the **complete, unabridged datasets**.
 
-## 5. Experiments / Verification
+## 5. How to Use This Dataset
 
-### (E1): UN R155 Annex 5 Coverage Verification [~30 human-minutes]
+### 5.1 Reproducing the ADS Case Study
 
-- **How:** Open `7. Derivation CheckList/Checklist.pdf` and cross-reference each checklist item (CL-01 through CL-38) against the UN R155 Annex 5 Part A threat categories. The paper's Table B.1 and B.2 provide the complete semantic mapping.
-- **Expected Result:** Every Annex 5 threat category (items 1–32) is addressed by at least one checklist item, confirming 100% coverage **(C1)**.
-- **Artifacts Used:** `7. Derivation CheckList/Checklist.pdf`
+These artifacts are the complete output of our case study (Section 4). Since the TARA process is an analytical methodology — not a computational experiment — **the dataset itself is the result**. Reviewers can verify the paper's findings by:
 
-### (E2): Comparative Analysis — STRIDE vs. Extended TARA [~30 human-minutes]
+1. Opening any artifact and confirming that the paper's tables are faithful subsets of the full data.
+2. Tracing any checklist item (e.g., CL-25) backward through the entire pipeline to verify end-to-end traceability:
 
-- **How:**
-  1. Open `3. Threat Scenario/Threat Scenario(STRIDE).pdf` and enumerate the threat scenarios identified by STRIDE alone.
-  2. Open `3. Threat Scenario/Threat Scenario(ATLAS).pdf` and `Threat Scenario(OWASP).pdf` to identify the additional AI-specific and LLM-specific threats.
-  3. Cross-reference with `7. Derivation CheckList/Checklist.pdf` — 11 checklist items (CL-19, CL-20, CL-25–CL-27, CL-28, CL-29, CL-31–CL-33, and related items) are exclusively derived from the ATLAS/OWASP extensions.
-- **Expected Result:** 11 out of 38 total checklist items (≈29%) address AI-specific threats that cannot be identified through STRIDE alone **(C2)**.
-- **Artifacts Used:** `3. Threat Scenario/`, `7. Derivation CheckList/Checklist.pdf`
+```
+CL-25 (Checklist)
+  → Security Requirement (6. Derivation Security Requirements/)
+    → Attack Path (5. Attack Path Analysis/)
+      → Threat Scenario (3. Threat Scenario/) + Attack Library (2. AttackLibrary/)
+        → Asset in DFD (1. DFD/)
+```
 
-### (E3): D2TARA Maturity Assessment [~20 human-minutes]
+### 5.2 Reusing for ADS Threat Modeling
 
-- **How:** Evaluate the data integration level across TARA sections by inspecting the traceability chain:
-  1. **Standardization (CL 2):** Verify that `2. AttackLibrary/` contains structured references from five external data source categories (CVE, CWE, Papers, Standards, Technical Reports).
-  2. **Integration (CL 3):** Trace the full pipeline — Attack Library → Threat Scenarios → Damage Scenarios → Attack Paths → Security Requirements → Checklists — confirming systematic integration across the DAMAGE, ATTACK, and RISK TREAT sections.
-- **Expected Result:** The methodology satisfies CL 3 (Integration) for all three universally recognized data-driven TARA sections **(C3)**.
-- **Artifacts Used:** All directories (1–7)
+Researchers or practitioners conducting TARA on an ADS — whether on the same NVIDIA Jetson platform or a similar architecture — can directly reuse or extend the following artifacts:
 
-### End-to-End Traceability Check [Optional, ~15 human-minutes]
+- **Attack Library** (`2. AttackLibrary/`) — The library is constructed from CVEs, CWEs, academic papers, standards, and technical reports relevant to ADS. It can be used as-is for any ADS sharing similar components (camera, LiDAR, radar, MLLM, sensor fusion), or filtered/extended for a specific target system.
+- **Threat Scenarios** (`3. Threat Scenario/`) — The STRIDE, ATLAS, and OWASP threat scenarios are derived per asset type. For an ADS with the same perception-planning-control architecture, these scenarios serve as a baseline that can be adopted or adapted.
+- **Checklist** (`7. Derivation CheckList/`) — The 38 security checklists are validated against UN R155 Annex 5. They can be used directly as a compliance checklist for ADS cybersecurity assessment or Vehicle Type Approval (VTA) preparation.
 
-To further validate the artifacts, pick any checklist item in `7. Derivation CheckList/Checklist.pdf` and trace it backward through the entire TARA pipeline:
+### 5.3 Adapting to Other Physical AI Systems
 
-  - Checklist → Security Requirement (`6. Derivation Security Requirements/`)
-  - Security Requirement → Attack Path (`5. Attack Path Analysis/`)
-  - Attack Path → Threat Scenario (`3. Threat Scenario/`) + Attack Library (`2. AttackLibrary/`)
-  - Threat Scenario → Asset in DFD (`1. DFD/`)
+For systems beyond ADS (e.g., autonomous drones, robotic surgery, smart manufacturing), the artifacts serve as a **reference template** for applying the extended TARA methodology:
 
-This confirms that every security control is grounded in a concrete threat identified through the extended TARA process.
-
-## 6. Using These Artifacts as a Reference
-
-Researchers and practitioners who wish to apply the extended TARA methodology to their own systems can follow these steps:
-
-1. **Define your system architecture** using multi-level DFDs (see `1. DFD/` for examples at Level 0, 1, and 2).
-2. **Construct an Attack Library** by collecting and categorizing attacks from CVEs, CWEs, academic papers, standards, and technical reports (see `2. AttackLibrary/` for our methodology and format).
-3. **Identify threat scenarios** using the three frameworks in parallel:
-   - STRIDE for traditional software/network threats
+1. **Define your system architecture** using multi-level DFDs (see `1. DFD/` for the format and decomposition approach).
+2. **Build or extend the Attack Library** — the CVE/CWE/Paper structure in `2. AttackLibrary/` can be reused for shared components (e.g., GPU, OS, sensors) and supplemented with domain-specific entries.
+3. **Apply the three-framework threat identification** in parallel:
+   - STRIDE for software/network threats
    - MITRE ATLAS for AI/ML-specific threats
-   - OWASP Top 10 for LLMs if your system incorporates large language models
-4. **Derive damage scenarios, attack paths, security requirements, and checklists** following the ISO/SAE 21434 TARA process flow demonstrated in directories 4–7.
+   - OWASP Top 10 for LLMs (if applicable)
+4. **Follow the TARA pipeline** (directories 4–7) as a process template to derive damage scenarios, attack paths, security requirements, and checklists for your target system.
 
-## 7. License
+## 6. License
 
 This dataset is released under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
 
