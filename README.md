@@ -48,8 +48,11 @@ These artifacts serve two purposes:
 ├── 6. Derivation Security Requirements/
 │   └── Security Requirement.pdf  # Security requirements per threat (Table 8)
 │
-└── 7. Derivation CheckList/
-    └── Checklist.pdf          # 38 actionable security checklists (CL-01 to CL-38)
+├── 7. Derivation CheckList/
+│   └── Checklist.pdf          # 38 actionable security checklists (CL-01 to CL-38)
+│
+└── 8. Mapping to UN R 155 Annex 5 Threats/
+    └── Mapping to UN R 155 Annex 5 Threats.pdf          # Checklists Are Mapping to UN R 155 Annex 5
 ```
 
 Each directory corresponds to a step in the extended TARA process (Sections 3–4 of the paper). All documents are provided in PDF format.
